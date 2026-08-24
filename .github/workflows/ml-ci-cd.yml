@@ -1,0 +1,38 @@
+name: Student ML CI-CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  test:
+    name: CI - Test ML Model
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run ML Tests
+        run: pytest
+
+  deploy:
+    name: CD - Deploy ML Model
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy Application
+        run: |
+          echo "ML Model deployed successfully!"
